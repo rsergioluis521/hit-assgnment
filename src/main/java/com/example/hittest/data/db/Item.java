@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
-@Table(name = "items")
+@Table(name = "item")
 public class Item {
     @Setter
     @Getter

@@ -21,13 +21,22 @@ public class ItemController {
         }
     }
 
-    @PutMapping
-    public String updateItem() {
+    @PutMapping("updateAll")
+    public String updateItems() {
         try {
             inventoryService.updateInventory();
             return "Successfully updated inventories";
         } catch (Exception e) {
             return "Error updating inventories";
+        }
+    }
+
+    @GetMapping("{itemId}")
+    public ItemNetwork getItemById(@PathVariable Integer itemId){
+        try {
+            return inventoryService.getItemById(itemId);
+        }catch (Exception ex){
+            throw new RuntimeException("Could not find item with id " + itemId);
         }
     }
 }

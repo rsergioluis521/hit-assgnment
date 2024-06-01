@@ -7,6 +7,7 @@ import soapClient.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SoapClientService {
@@ -16,8 +17,8 @@ public class SoapClientService {
         this.inventoryService = inventoryService;
     }
 
-    public List<ProductInventory> getInventory(String productId) {
-        GetInventoryLevelsRequest request = getGetInventoryLevelsRequest(productId);
+    public List<ProductInventory> getInventory(String productId, List<String> partIds) {
+        GetInventoryLevelsRequest request = getGetInventoryLevelsRequest(productId, partIds);
 
         GetInventoryLevelsResponse response = inventoryService.getInventoryLevels(request);
 
@@ -47,12 +48,19 @@ public class SoapClientService {
         return inventories;
     }
 
-    private GetInventoryLevelsRequest getGetInventoryLevelsRequest(String productId) {
+    private GetInventoryLevelsRequest getGetInventoryLevelsRequest(String productId, List<String> partIds) {
         GetInventoryLevelsRequest request = new GetInventoryLevelsRequest();
         request.setWsVersion("2.0.0");
         request.setProductId(productId);
         request.setId("amanzonii");
         request.setPassword("i2r09jnacuiah2phrunucasjoaschias");
+
+        if (!partIds.isEmpty()){
+            Filter filter = new Filter();
+            filter.setPartIdArray(new PartIdArray());
+            request.setFilter(filter);
+            partIds.forEach(p -> request.getFilter().getPartIdArray().getPartId().add(p));
+        }
         return request;
     }
 }
